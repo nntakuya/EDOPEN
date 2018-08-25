@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 
@@ -44,7 +45,16 @@ class UsersController extends Controller
 
         // TODO: 取得メールアドレスにメールを送信
 
-        //
+        //Modelに反映
+        $user = new User;
+        $user->name = $localpart;
+        $user->email = $request->email;
+        $user->password = $request->password;
+
+        $user->save();
+
+        info('user : '.$user);
+
         return view('user.register');
     }
 
