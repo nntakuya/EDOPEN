@@ -21,9 +21,9 @@
 
 Route::get('/users/sign_up','UsersController@create');
 Route::post('/users/sign_up','UsersController@store');
-// Route::get('/index.php','UsersController@index')
-//         ->middleware('auth');
+Route::get('/index','HomeController@index');
 
 
 Route::get('users/login','UsersController@getAuth');
 Route::post('users/login','UsersController@postAuth');
+Route::get('users/logout','UsersController@getLogout');

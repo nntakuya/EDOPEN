@@ -117,12 +117,16 @@ class UsersController extends Controller
         $password = $request->password;
 
         if (Auth::attempt(['email'=>$email, 'password'=>$password])) {
-            $msg = 'ログインしました。('. Auth::user()->name .')' ;
-        }else {
-            $msg = 'ログインに失敗しました。';
+            return redirect('index');
         }
 
-        return view('user.login', ['message'=>$msg]);
+        return view('users.login', ['message'=>'ログインに失敗しました。']);
+    }
+
+    public function getLogout(){
+        Auth::logout();//ログアウト
+
+        return redirect('users/login');
     }
 
 }

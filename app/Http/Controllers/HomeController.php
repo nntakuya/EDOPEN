@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
+use App\User;
 use Illuminate\Http\Request;
+// use App\Http\Requests\UserRequest;
+// use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -23,6 +29,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //ユーザー情報を取得
+        $user = Auth::user();
+        info($user);
+        return view('index',['user'=>$user]);
     }
 }
