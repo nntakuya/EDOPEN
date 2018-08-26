@@ -78,9 +78,15 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    // public function edit($id)
+    public function edit()
     {
-        //
+        //（疑問）User_idを取得する場合は、『編集フォーム』から取得した方が良いのか、それとも、ログインユーザーのIDをそのまま取得した方がいいのか。
+        // info('ID : '.Auth::user()->id);
+        $user = User::find(Auth::user()->id);
+        // info('ユーザー情報 : '.$user);
+
+        return view('user.edit',['user'=>$user]);
     }
 
     /**
@@ -90,9 +96,36 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request)
     {
-        //
+        //下記コピペなので、編集必須
+
+        info('update');
+        info($request);
+
+        // POSTバリデーション
+        if ($request->isMethod('POST')) {
+            info('POST VALIDATAION');
+
+            // 商品情報の保存
+            // $item = Item::create(['jan'=> $request->jan, 'name'=> $request->name]);
+
+            // 商品画像の保存
+            foreach ($request->file('files') as $index=> $e) {
+                // $ext = $e['photo']->guessExtension();
+                // $filename = "{$request->jan}_{$index}.{$ext}";
+                // $path = $e['photo']->storeAs('images', $filename);
+
+                // infro($path);
+                // photosメソッドにより、商品に紐付けられた画像を保存する
+                // $item->photos()->create(['path'=> $path]);
+            }
+
+            return redirect('/user/edit');
+        }
+
+        // GET
+        return view('user.edit');
     }
 
     /**

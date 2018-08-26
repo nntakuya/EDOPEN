@@ -27,3 +27,5 @@ Route::get('/index','HomeController@index');
 Route::get('users/login','UsersController@getAuth');
 Route::post('users/login','UsersController@postAuth');
 Route::get('users/logout','UsersController@getLogout');
+Route::get('user/edit','UsersController@edit');
+Route::post('user/edit','UsersController@update');

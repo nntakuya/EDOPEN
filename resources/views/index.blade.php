@@ -23,7 +23,7 @@
 <p><a href="users/logout">ログアウト</a></p>
 
 {{-- 編集ボタン --}}
-<p><a href="users/edit">ユーザー情報を編集</a></p>
+<p><a href="user/edit">ユーザー情報を編集</a></p>
 
 
 @endsection
