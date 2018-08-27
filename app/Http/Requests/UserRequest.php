@@ -12,12 +12,13 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
+        return true ;
         //// TODO: 下記の認証のやり方が良いのかが分からない
-        if ($this->path() == 'users/sign_up' || 'user/edit') {
-            return true ;
-        } else {
-            return false;
-        }
+        // if ($this->path() == 'users/sign_up' || 'user/edit') {
+        //     return true ;
+        // } else {
+        //     return false;
+        // }
 
     }
 
@@ -31,7 +32,7 @@ class UserRequest extends FormRequest
         return [
             'email'=>'email',
             'password' =>'required',
-             'files.*.photo' => 'image|mimes:jpeg,bmp,png',
+             // 'files.*.photo' => 'image|mimes:jpeg,bmp,png',
         ];
     }
 

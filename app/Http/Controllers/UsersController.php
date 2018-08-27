@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class UsersController extends Controller
 {
@@ -96,36 +98,34 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request)
+    //分からない点：下記にUserRequestを使用した場合に、updateメソッドの処理が実行されない
+    public function update(Request $request)
     {
-        //下記コピペなので、編集必須
 
-        info('update');
-        info($request);
+        // info('ファイル名'.$request->file('profile_img')->getClientOriginalName());
+        // info('function update'.$request);
+        //フォームから画像を取得し、 "/storage/app/public/profile_img"に保存
+        //フォームから画像を取得し、
+        // $path = $request->file('profile_img')->store('profile_images','public');
+        // info($path);
 
-        // POSTバリデーション
-        if ($request->isMethod('POST')) {
-            info('POST VALIDATAION');
+        // 認証済みのユーザーのみ、ユーザー情報をログインできるようにする
+        $user = User::find(Auth::user()->id);
+        // info($user);
+        info($request->all());
 
-            // 商品情報の保存
-            // $item = Item::create(['jan'=> $request->jan, 'name'=> $request->name]);
-
-            // 商品画像の保存
-            foreach ($request->file('files') as $index=> $e) {
-                // $ext = $e['photo']->guessExtension();
-                // $filename = "{$request->jan}_{$index}.{$ext}";
-                // $path = $e['photo']->storeAs('images', $filename);
-
-                // infro($path);
-                // photosメソッドにより、商品に紐付けられた画像を保存する
-                // $item->photos()->create(['path'=> $path]);
-            }
-
-            return redirect('/user/edit');
+        $form = $request->all();
+        unset($form['_token'],$form['profile_img']);
+        $user->fill($form);
+        if (!empty($request->profile_img)) {
+            $user->img = $request->file('profile_img')->store('profile_images','public');
         }
 
+        $user->save();
+
+        info($user);
         // GET
-        return view('user.edit');
+        return view('user.edit',['user'=>$user]);
     }
 
     /**
@@ -138,6 +138,13 @@ class UsersController extends Controller
     {
         //
     }
+
+
+
+// ================================================
+    // ユーザーのログイン・ログアウト処理
+// ================================================
+
 
     public function getAuth(Request $request){
         $param = ['message'=>'ログインしてください。'];
@@ -161,5 +168,26 @@ class UsersController extends Controller
 
         return redirect('users/login');
     }
+
+
+    // ================================================
+        //  その他ファンクション
+    // ================================================
+
+    public function uploadImg(){
+        info('uploadImg');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
